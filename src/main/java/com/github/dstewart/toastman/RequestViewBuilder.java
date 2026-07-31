@@ -22,9 +22,15 @@ public record RequestViewBuilder(RequestModel model, Runnable requestHandler) im
         content.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getResource(Constants.STYLESHEET_PATH))
                         .toExternalForm());
-        content.setTop(headingLabel(Constants.TITLE));
+        content.setTop(createHeader());
         content.setCenter(createCenter());
         content.setBottom(createButtons());
+        return content;
+    }
+
+    private Node createHeader() {
+        HBox content = new HBox(6, headingLabel(Constants.TITLE));
+        content.setAlignment(Pos.CENTER);
         return content;
     }
 
