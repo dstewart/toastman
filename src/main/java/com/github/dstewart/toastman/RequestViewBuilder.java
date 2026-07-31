@@ -15,7 +15,7 @@ import javafx.util.Builder;
 
 import java.util.Objects;
 
-public record RequestViewBuilder(RequestModel model, Runnable requestHandler) implements Builder<Region> {
+public record RequestViewBuilder(RequestModel model, Runnable clickHandler) implements Builder<Region> {
     @Override
     public Region build() {
         BorderPane content = new BorderPane();
@@ -49,10 +49,10 @@ public record RequestViewBuilder(RequestModel model, Runnable requestHandler) im
     }
 
     private Node createButtons() {
-        Button saveButton = new Button("Send");
-        saveButton.setOnAction(evt -> requestHandler.run());
+        Button sendButton = new Button("Send");
+        sendButton.setOnAction(evt -> clickHandler.run());
 
-        HBox content = new HBox(10, saveButton);
+        HBox content = new HBox(10, sendButton);
         content.setAlignment(Pos.CENTER_RIGHT);
         return content;
     }
