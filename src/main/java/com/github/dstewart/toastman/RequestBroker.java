@@ -1,7 +1,12 @@
 package com.github.dstewart.toastman;
 
 public class RequestBroker {
-    private final RequestDAO dao = new RequestDAO();
+
+    private final RequestDAO dao;
+
+    public RequestBroker(RequestDAO dao) {
+        this.dao = dao;
+    }
 
     public int makeRequest(Request request) {
         return dao.makeHttpRequest(createRequestDTO(request));

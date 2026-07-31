@@ -1,9 +1,5 @@
 package com.github.dstewart.toastman;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Future;
-
 public class RequestInteractor {
 
     private final RequestModel model;
@@ -11,7 +7,7 @@ public class RequestInteractor {
 
     public RequestInteractor(RequestModel model) {
         this.model = model;
-        this.broker = new RequestBroker();
+        this.broker = new RequestBroker(new RequestDAO(new RequestClient()));
     }
 
     public void sendHttp() {

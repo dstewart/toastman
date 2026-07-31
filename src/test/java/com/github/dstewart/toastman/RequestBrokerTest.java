@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RequestBrokerTest {
+
+    private final RequestBroker broker = new RequestBroker(new RequestDAO(new RequestClient()));
+
     @Test
     public void createRequestDTOGetURI() {
-        RequestBroker broker = new RequestBroker();
         Request request = new Request();
         request.setUri("http://www.google.com");
         request.setMethod("GET");
@@ -16,7 +18,6 @@ public class RequestBrokerTest {
 
     @Test
     public void createRequestDTOGetMethod() {
-        RequestBroker broker = new RequestBroker();
         Request request = new Request();
         request.setUri("http://www.google.com");
         request.setMethod("GET");
