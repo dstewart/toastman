@@ -14,8 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.util.Builder;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
-public record RequestViewBuilder(RequestModel model, Runnable clickHandler) implements Builder<Region> {
+public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHandler) implements Builder<Region> {
     @Override
     public Region build() {
         BorderPane content = new BorderPane();
@@ -34,6 +35,7 @@ public record RequestViewBuilder(RequestModel model, Runnable clickHandler) impl
         return content;
     }
 
+
     private Node createCenter() {
         VBox content = new VBox(6, accountBox(), nameBox());
         content.setPadding(new Insets(20));
@@ -50,7 +52,10 @@ public record RequestViewBuilder(RequestModel model, Runnable clickHandler) impl
 
     private Node createButtons() {
         Button sendButton = new Button("Send");
-        sendButton.setOnAction(evt -> clickHandler.run());
+        sendButton.setOnAction(evt -> {
+            sendButton.setDisable(true);
+            sendHandler.accept(() -> sendButton.setDisable(false));
+        });
 
         HBox content = new HBox(10, sendButton);
         content.setAlignment(Pos.CENTER_RIGHT);
