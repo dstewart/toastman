@@ -52,9 +52,11 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
 
     private Node createButtons() {
         Button sendButton = new Button("Send");
+        sendButton.disableProperty().bind(model.isValidProperty().not());
         sendButton.setOnAction(evt -> {
+            sendButton.disableProperty().unbind();
             sendButton.setDisable(true);
-            sendHandler.accept(() -> sendButton.setDisable(false));
+            sendHandler.accept(() -> sendButton.disableProperty().bind(model.isValidProperty().not()));
         });
 
         HBox content = new HBox(10, sendButton);

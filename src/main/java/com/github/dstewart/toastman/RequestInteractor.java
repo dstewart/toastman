@@ -1,5 +1,7 @@
 package com.github.dstewart.toastman;
 
+import javafx.beans.binding.Bindings;
+
 public class RequestInteractor {
 
     private final RequestModel model;
@@ -8,6 +10,9 @@ public class RequestInteractor {
     public RequestInteractor(RequestModel model) {
         this.model = model;
         this.broker = new RequestBroker(new RequestDAO(new RequestClient()));
+
+        RequestValidator validator = new RequestValidator(model);
+        model.isValidProperty().bind(Bindings.createBooleanBinding(validator::validate, model.uriAddressProperty(), model.httpMethodProperty()));
     }
 
     public void sendHttp() {
