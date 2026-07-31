@@ -8,7 +8,7 @@ public class RequestBroker {
         this.dao = dao;
     }
 
-    public int makeRequest(Request request) {
+    public Response makeRequest(Request request) {
         return dao.makeHttpRequest(createRequestDTO(request));
     }
 

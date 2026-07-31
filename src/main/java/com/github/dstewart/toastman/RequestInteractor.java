@@ -16,8 +16,8 @@ public class RequestInteractor {
     }
 
     public void sendHttp() {
-        int statusCode = broker.makeRequest(createRequestFromModel());
-        System.out.println(model.getHttpMethod() + " " + model.getUriAddress() + ": " + statusCode);
+        Response response = broker.makeRequest(createRequestFromModel());
+        System.out.println(model.getHttpMethod() + " " + model.getUriAddress() + ": " + response.statusCode());
     }
 
     Request createRequestFromModel() {

@@ -7,7 +7,7 @@ public class RequestDAO {
         this.client = client;
     }
 
-    public int makeHttpRequest(RequestDTO request) {
-        return client.sendRequest(request.getUri(),  request.getMethod());
+    public Response makeHttpRequest(RequestDTO request) {
+        return client.sendRequest(request.getUri(), request.getMethod());
     }
 }

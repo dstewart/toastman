@@ -6,7 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class RequestClient {
-    public int sendRequest(String uri, String method) {
+    public Response sendRequest(String uri, String method) {
         try (var httpClient = HttpClient.newHttpClient()) {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(uri))
@@ -15,7 +15,7 @@ public class RequestClient {
                     .build();
 
             HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            return response.statusCode();
+            return new Response(response.statusCode(), response.body());
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

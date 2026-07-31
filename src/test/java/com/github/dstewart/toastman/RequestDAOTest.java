@@ -19,13 +19,15 @@ public class RequestDAOTest {
     private RequestDAO dao;
 
     @Test
-    public void makeRequestStatusCode() {
-        when(client.sendRequest("http://google.com", "GET")).thenReturn(200);
+    public void makeRequestResponse() {
+        when(client.sendRequest("http://google.com", "GET"))
+                .thenReturn(new Response(200, "\"data\""));
 
         RequestDTO request = new RequestDTO("http://google.com", "GET");
-        int statusCode = dao.makeHttpRequest(request);
+        Response response = dao.makeHttpRequest(request);
 
         verify(client).sendRequest("http://google.com", "GET");
-        assertEquals(200, statusCode);
+        assertEquals(200, response.statusCode());
+        assertEquals("\"data\"", response.body());
     }
 }
