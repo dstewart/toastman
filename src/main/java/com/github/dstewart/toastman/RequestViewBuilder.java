@@ -35,7 +35,6 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         return content;
     }
 
-
     private Node createCenter() {
         VBox content = new VBox(6, accountBox(), nameBox());
         content.setPadding(new Insets(20));
@@ -51,15 +50,23 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
     }
 
     private Node createButtons() {
+        Label statusLabel = new Label();
+        statusLabel.textProperty().bind(model.lastResponseProperty());
+
         Button sendButton = new Button("Send");
         sendButton.disableProperty().bind(model.isValidProperty().not());
         sendButton.setOnAction(evt -> {
             sendButton.disableProperty().unbind();
             sendButton.setDisable(true);
-            sendHandler.accept(() -> sendButton.disableProperty().bind(model.isValidProperty().not()));
+            statusLabel.textProperty().unbind();
+            statusLabel.setText("Sending...");
+            sendHandler.accept(() -> {
+                sendButton.disableProperty().bind(model.isValidProperty().not());
+                statusLabel.textProperty().bind(model.lastResponseProperty());
+            });
         });
 
-        HBox content = new HBox(10, sendButton);
+        HBox content = new HBox(10, statusLabel, sendButton);
         content.setAlignment(Pos.CENTER_RIGHT);
         return content;
     }

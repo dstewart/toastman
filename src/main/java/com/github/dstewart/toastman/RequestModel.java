@@ -9,6 +9,7 @@ public class RequestModel {
     private final StringProperty uriAddress = new SimpleStringProperty("");
     private final StringProperty httpMethod = new SimpleStringProperty("");
     private final BooleanProperty isValid = new SimpleBooleanProperty(false);
+    private final StringProperty lastResponse = new SimpleStringProperty("");
 
     public String getUriAddress() {
         return uriAddress.get();
@@ -26,6 +27,10 @@ public class RequestModel {
         this.httpMethod.set(httpMethod);
     }
 
+    public void setLastResponse(String lastResponse) {
+        this.lastResponse.set(lastResponse);
+    }
+
     public StringProperty httpMethodProperty() {
         return httpMethod;
     }
@@ -34,5 +39,11 @@ public class RequestModel {
         return uriAddress;
     }
 
-    public BooleanProperty isValidProperty() { return isValid; }
+    public BooleanProperty isValidProperty() {
+        return isValid;
+    }
+
+    public StringProperty lastResponseProperty() {
+        return lastResponse;
+    }
 }

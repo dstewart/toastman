@@ -15,9 +15,13 @@ public class RequestInteractor {
         model.isValidProperty().bind(Bindings.createBooleanBinding(validator::validate, model.uriAddressProperty(), model.httpMethodProperty()));
     }
 
-    public void sendHttp() {
-        Response response = broker.makeRequest(createRequestFromModel());
-        System.out.println(model.getHttpMethod() + " " + model.getUriAddress() + ": " + response.statusCode());
+    public Response sendHttp() {
+        return broker.makeRequest(createRequestFromModel());
+    }
+
+    public void updateLastResponse(Response lastResponse) {
+        String message = String.valueOf(lastResponse.statusCode());
+        model.setLastResponse(message);
     }
 
     Request createRequestFromModel() {

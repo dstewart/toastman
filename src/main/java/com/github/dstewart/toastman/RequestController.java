@@ -16,14 +16,16 @@ public class RequestController {
     }
 
     private void makeRequest(Runnable afterTaskGuiUpdate) {
-        Task<Void> sendTask = new Task<>() {
+        Task<Response> sendTask = new Task<>() {
             @Override
-            protected Void call() {
-                interactor.sendHttp();
-                return null;
+            protected Response call() {
+                return interactor.sendHttp();
             }
         };
-        sendTask.setOnSucceeded(evt -> afterTaskGuiUpdate.run());
+        sendTask.setOnSucceeded(evt -> {
+            interactor.updateLastResponse(sendTask.getValue());
+            afterTaskGuiUpdate.run();
+        });
 
         new Thread(sendTask).start();
     }
