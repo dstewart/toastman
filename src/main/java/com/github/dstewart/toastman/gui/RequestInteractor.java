@@ -1,5 +1,11 @@
-package com.github.dstewart.toastman;
+package com.github.dstewart.toastman.gui;
 
+import com.github.dstewart.toastman.http.Response;
+import com.github.dstewart.toastman.http.Request;
+import com.github.dstewart.toastman.http.RequestBroker;
+import com.github.dstewart.toastman.http.RequestClient;
+import com.github.dstewart.toastman.http.RequestDAO;
+import com.github.dstewart.toastman.util.RequestValidator;
 import javafx.beans.binding.Bindings;
 
 public class RequestInteractor {

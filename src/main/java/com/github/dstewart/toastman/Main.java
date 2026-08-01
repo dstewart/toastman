@@ -1,5 +1,6 @@
 package com.github.dstewart.toastman;
 
+import com.github.dstewart.toastman.gui.RequestController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

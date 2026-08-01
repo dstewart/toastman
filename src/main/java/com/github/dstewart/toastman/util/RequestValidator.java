@@ -1,5 +1,6 @@
-package com.github.dstewart.toastman;
+package com.github.dstewart.toastman.util;
 
+import com.github.dstewart.toastman.gui.RequestModel;
 import org.apache.commons.validator.routines.UrlValidator;
 
 public class RequestValidator {

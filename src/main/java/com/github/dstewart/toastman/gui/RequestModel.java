@@ -1,4 +1,4 @@
-package com.github.dstewart.toastman;
+package com.github.dstewart.toastman.gui;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

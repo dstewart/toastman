@@ -1,5 +1,6 @@
-package com.github.dstewart.toastman;
+package com.github.dstewart.toastman.gui;
 
+import com.github.dstewart.toastman.http.Response;
 import javafx.concurrent.Task;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;

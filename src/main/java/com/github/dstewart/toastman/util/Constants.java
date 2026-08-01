@@ -1,4 +1,4 @@
-package com.github.dstewart.toastman;
+package com.github.dstewart.toastman.util;
 
 public interface Constants {
     public static final int WINDOW_WIDTH = 400;

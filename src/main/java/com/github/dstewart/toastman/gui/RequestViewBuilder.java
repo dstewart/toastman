@@ -1,5 +1,6 @@
-package com.github.dstewart.toastman;
+package com.github.dstewart.toastman.gui;
 
+import com.github.dstewart.toastman.util.Constants;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

@@ -1,4 +1,4 @@
-package com.github.dstewart.toastman;
+package com.github.dstewart.toastman.http;
 
 import org.junit.jupiter.api.Test;
 

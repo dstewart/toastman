@@ -1,4 +1,4 @@
-package com.github.dstewart.toastman;
+package com.github.dstewart.toastman.http;
 
 import java.net.URI;
 import java.net.http.HttpClient;

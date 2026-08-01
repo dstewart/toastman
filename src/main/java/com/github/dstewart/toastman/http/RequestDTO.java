@@ -1,4 +1,4 @@
-package com.github.dstewart.toastman;
+package com.github.dstewart.toastman.http;
 
 public class RequestDTO {
     private String uri;
