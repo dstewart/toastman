@@ -1,12 +1,10 @@
 package com.github.dstewart.toastman.gui;
 
-import com.github.dstewart.toastman.http.Response;
-import com.github.dstewart.toastman.http.Request;
-import com.github.dstewart.toastman.http.RequestBroker;
-import com.github.dstewart.toastman.http.RequestClient;
-import com.github.dstewart.toastman.http.RequestDAO;
+import com.github.dstewart.toastman.http.*;
 import com.github.dstewart.toastman.util.RequestValidator;
 import javafx.beans.binding.Bindings;
+
+import java.net.http.HttpClient;
 
 public class RequestInteractor {
 
@@ -15,7 +13,7 @@ public class RequestInteractor {
 
     public RequestInteractor(RequestModel model) {
         this.model = model;
-        this.broker = new RequestBroker(new RequestDAO(new RequestClient()));
+        this.broker = new RequestBroker(new RequestDAO(new RequestClient(HttpClient.newHttpClient())));
 
         RequestValidator validator = new RequestValidator(model);
         model.isValidProperty().bind(Bindings.createBooleanBinding(validator::validate, model.uriAddressProperty(), model.httpMethodProperty()));
@@ -26,8 +24,7 @@ public class RequestInteractor {
     }
 
     public void updateLastResponse(Response lastResponse) {
-        String message = String.valueOf(lastResponse.statusCode());
-        model.setLastResponse(message);
+        model.setLastResponse(lastResponse.display());
     }
 
     Request createRequestFromModel() {

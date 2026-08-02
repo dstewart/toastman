@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
@@ -19,15 +20,35 @@ public class RequestDAOTest {
     private RequestDAO dao;
 
     @Test
-    public void makeRequestResponse() {
-        when(client.sendRequest("http://google.com", "GET"))
-                .thenReturn(new Response(200, "\"data\""));
+    public void makeRequestSuccess() throws RequestException {
+        when(client.sendRequest("https://google.com", "GET"))
+                .thenReturn(new Success(200, "Success"));
 
-        RequestDTO request = new RequestDTO("http://google.com", "GET");
+        RequestDTO request = new RequestDTO("https://google.com", "GET");
         Response response = dao.makeHttpRequest(request);
 
-        verify(client).sendRequest("http://google.com", "GET");
-        assertEquals(200, response.statusCode());
-        assertEquals("\"data\"", response.body());
+        verify(client).sendRequest("https://google.com", "GET");
+        assertInstanceOf(Success.class, response);
+        assertEquals("200", response.display());
+
+        var success = (Success) response;
+        assertEquals(200, success.statusCode());
+        assertEquals("Success", success.body());
+    }
+
+    @Test
+    public void makeRequestFailure() throws RequestException {
+        when(client.sendRequest("https://google.com", "GET"))
+                .thenThrow(new RequestException("connection error"));
+
+        RequestDTO request = new RequestDTO("https://google.com", "GET");
+        Response response = dao.makeHttpRequest(request);
+
+        verify(client).sendRequest("https://google.com", "GET");
+        assertInstanceOf(Failure.class, response);
+        assertEquals("Error: connection error", response.display());
+
+        var failure = (Failure) response;
+        assertEquals("connection error", failure.errorMessage());
     }
 }
