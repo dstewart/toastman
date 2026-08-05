@@ -1,19 +1,20 @@
 package com.github.dstewart.toastman.gui;
 
+import com.github.dstewart.toastman.http.Method;
 import com.github.dstewart.toastman.util.Constants;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Builder;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -26,7 +27,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
                         .toExternalForm());
         content.setTop(createHeader());
         content.setCenter(createCenter());
-        content.setBottom(createButtons());
+        content.setBottom(createFooter());
         return content;
     }
 
@@ -37,7 +38,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
     }
 
     private Node createCenter() {
-        VBox content = new VBox(6, accountBox(), nameBox());
+        VBox content = new VBox(6, accountBox(), methodBox());
         content.setPadding(new Insets(20));
         return content;
     }
@@ -46,17 +47,17 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         return new HBox(6, promptLabel("URI:"), boundTextField(model.uriAddressProperty()));
     }
 
-    private Node nameBox() {
-        return new HBox(6, promptLabel("Method:"), boundTextField(model.httpMethodProperty()));
+    private Node methodBox() {
+        return new HBox(6, promptLabel("Method:"), radioButtonGroup());
     }
 
-    private Node createButtons() {
+    private Node createFooter() {
         Label statusLabel = new Label();
         statusLabel.textProperty().bind(model.lastResponseProperty());
 
         Button sendButton = new Button("Send");
         sendButton.disableProperty().bind(model.isValidProperty().not());
-        sendButton.setOnAction(evt -> {
+        sendButton.setOnAction(_ -> {
             sendButton.disableProperty().unbind();
             sendButton.setDisable(true);
             statusLabel.textProperty().unbind();
@@ -76,6 +77,28 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         TextField textField = new TextField();
         textField.textProperty().bindBidirectional(boundProperty);
         return textField;
+    }
+
+    private Node radioButtonGroup() {
+        HBox content = new HBox(10);
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        List<RadioButton> radioButtons = Arrays.stream(Method.values())
+                                            .map(method -> new RadioButton(method.name()))
+                                            .toList();
+        radioButtons.forEach(radioButton -> radioButton.setToggleGroup(toggleGroup));
+
+        toggleGroup.selectedToggleProperty().addListener((_, _, newValue) -> {
+            if (newValue != null) {
+                model.setHttpMethod(((RadioButton) newValue).getText());
+            } else {
+                model.setHttpMethod(null);
+            }
+        });
+        content.setAlignment(Pos.CENTER_LEFT);
+        content.getChildren().addAll(radioButtons);
+
+        return content;
     }
 
     private Node promptLabel(String text) {

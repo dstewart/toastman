@@ -13,6 +13,7 @@ public class RequestValidator {
     }
 
     public boolean validate() {
-        return urlValidator.isValid(model.getUriAddress());
+        return urlValidator.isValid(model.getUriAddress())
+                && !model.getHttpMethod().isEmpty();
     }
 }
