@@ -28,6 +28,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         content.setTop(createHeader());
         content.setCenter(createCenter());
         content.setBottom(createFooter());
+        content.setPrefSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         return content;
     }
 
