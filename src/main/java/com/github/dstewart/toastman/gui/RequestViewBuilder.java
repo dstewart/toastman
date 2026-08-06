@@ -1,7 +1,6 @@
 package com.github.dstewart.toastman.gui;
 
 import com.github.dstewart.toastman.http.Method;
-import com.github.dstewart.toastman.util.Constants;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,27 +18,37 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHandler) implements Builder<Region> {
+    private static final String TITLE = "Toastman";
+    private static final String STYLESHEET_PATH = "/css/stylesheet.css";
+    private static final String PROMPT_LABEL_CLASS = "prompt-label";
+    private static final String HEADING_LABEL_CLASS = "heading-label";
+
+    private static final int WINDOW_WIDTH = 800;
+    private static final int WINDOW_HEIGHT = 600;
+    private static final int TEXT_AREA_WIDTH = 300;
+    private static final int TEXT_AREA_HEIGHT = 400;
+
     @Override
     public Region build() {
         BorderPane content = new BorderPane();
         content.getStylesheets().add(
-                Objects.requireNonNull(this.getClass().getResource(Constants.STYLESHEET_PATH))
+                Objects.requireNonNull(this.getClass().getResource(STYLESHEET_PATH))
                         .toExternalForm());
         content.setTop(createHeader());
         content.setCenter(createCenter());
         content.setBottom(createFooter());
-        content.setPrefSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        content.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         return content;
     }
 
     private Node createHeader() {
-        HBox content = new HBox(6, headingLabel(Constants.TITLE));
+        HBox content = new HBox(6, headingLabel(TITLE));
         content.setAlignment(Pos.CENTER);
         return content;
     }
 
     private Node createCenter() {
-        VBox content = new VBox(6, accountBox(), methodBox());
+        VBox content = new VBox(6, accountBox(), methodBox(), inputOutputBox());
         content.setPadding(new Insets(20));
         return content;
     }
@@ -50,6 +59,11 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
 
     private Node methodBox() {
         return new HBox(6, promptLabel("Method:"), radioButtonGroup());
+    }
+
+    private Node inputOutputBox() {
+        return new HBox(6, promptLabel("Input:"), boundScrollableTextArea(model.inputBodyProperty()),
+                promptLabel("Output:"), boundScrollableTextArea(model.lastBodyProperty()));
     }
 
     private Node createFooter() {
@@ -80,6 +94,12 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         return textField;
     }
 
+    private Node boundTextArea(StringProperty boundProperty) {
+        TextArea textArea = new TextArea();
+        textArea.textProperty().bindBidirectional(boundProperty);
+        return textArea;
+    }
+
     private Node radioButtonGroup() {
         HBox content = new HBox(10);
 
@@ -102,12 +122,21 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         return content;
     }
 
+    private Node boundScrollableTextArea(StringProperty boundProperty) {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(boundTextArea(boundProperty));
+        scrollPane.setPrefSize(TEXT_AREA_WIDTH, TEXT_AREA_HEIGHT);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        return scrollPane;
+    }
+
     private Node promptLabel(String text) {
-        return styledLabel(text, Constants.PROMPT_LABEL_CLASS);
+        return styledLabel(text, PROMPT_LABEL_CLASS);
     }
 
     private Node headingLabel(String text) {
-        return styledLabel(text, Constants.HEADING_LABEL_CLASS);
+        return styledLabel(text, HEADING_LABEL_CLASS);
     }
 
     private Node styledLabel(String text, String classSelector) {

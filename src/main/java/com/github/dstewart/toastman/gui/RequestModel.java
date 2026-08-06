@@ -8,7 +8,10 @@ import javafx.beans.property.StringProperty;
 public class RequestModel {
     private final StringProperty uriAddress = new SimpleStringProperty("");
     private final StringProperty httpMethod = new SimpleStringProperty("");
+    private final StringProperty inputBody = new SimpleStringProperty("");
     private final BooleanProperty isValid = new SimpleBooleanProperty(false);
+
+    private final StringProperty lastBody = new SimpleStringProperty("");
     private final StringProperty lastResponse = new SimpleStringProperty("");
 
     public String getUriAddress() {
@@ -45,5 +48,13 @@ public class RequestModel {
 
     public StringProperty lastResponseProperty() {
         return lastResponse;
+    }
+
+    public StringProperty inputBodyProperty() {
+        return inputBody;
+    }
+
+    public StringProperty lastBodyProperty() {
+        return lastBody;
     }
 }
