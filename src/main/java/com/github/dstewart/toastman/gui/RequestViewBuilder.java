@@ -74,7 +74,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
 
     private Node createFooter() {
         Label statusLabel = new Label();
-        statusLabel.textProperty().bind(model.lastResponseProperty());
+        statusLabel.textProperty().bind(model.lastStatusProperty());
         statusLabel.textFillProperty().bind(model.statusColorProperty());
 
         Button sendButton = new Button("Send");
@@ -88,7 +88,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
             statusLabel.setTextFill(Color.BLACK);
             sendHandler.accept(() -> {
                 sendButton.disableProperty().bind(model.isValidProperty().not());
-                statusLabel.textProperty().bind(model.lastResponseProperty());
+                statusLabel.textProperty().bind(model.lastStatusProperty());
                 statusLabel.textFillProperty().bind(model.statusColorProperty());
             });
         });

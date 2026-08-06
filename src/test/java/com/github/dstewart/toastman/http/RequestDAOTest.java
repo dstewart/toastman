@@ -1,5 +1,6 @@
 package com.github.dstewart.toastman.http;
 
+import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +30,9 @@ public class RequestDAOTest {
 
         verify(client).sendRequest("https://google.com", "GET");
         assertInstanceOf(Success.class, response);
-        assertEquals("200", response.display());
+        assertEquals("200", response.status());
+        assertEquals("Success", response.body());
+        assertEquals(Color.GREEN, response.color());
 
         var success = (Success) response;
         assertEquals(200, success.statusCode());
@@ -46,7 +49,9 @@ public class RequestDAOTest {
 
         verify(client).sendRequest("https://google.com", "GET");
         assertInstanceOf(Failure.class, response);
-        assertEquals("Error: connection error", response.display());
+        assertEquals("connection error", response.status());
+        assertEquals("", response.body());
+        assertEquals(Color.RED, response.color());
 
         var failure = (Failure) response;
         assertEquals("connection error", failure.errorMessage());

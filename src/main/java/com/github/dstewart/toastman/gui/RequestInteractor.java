@@ -24,8 +24,9 @@ public class RequestInteractor {
     }
 
     public void updateLastResponse(Response lastResponse) {
-        model.setLastResponse(lastResponse.display());
+        model.setLastStatus(lastResponse.status());
         model.setStatusColor(lastResponse.color());
+        model.setLastBody(lastResponse.body());
     }
 
     Request createRequestFromModel() {

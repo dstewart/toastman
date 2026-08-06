@@ -11,7 +11,7 @@ public class RequestModel {
 
     private final ObjectProperty<Color> statusColor = new SimpleObjectProperty<>(Color.GREEN);
     private final StringProperty lastBody = new SimpleStringProperty("");
-    private final StringProperty lastResponse = new SimpleStringProperty("");
+    private final StringProperty lastStatus = new SimpleStringProperty("");
 
     public String getUriAddress() {
         return uriAddress.get();
@@ -29,12 +29,28 @@ public class RequestModel {
         this.httpMethod.set(httpMethod);
     }
 
-    public void setLastResponse(String lastResponse) {
-        this.lastResponse.set(lastResponse);
+    public String getLastStatus() {
+        return this.lastStatus.get();
+    }
+
+    public void setLastStatus(String lastStatus) {
+        this.lastStatus.set(lastStatus);
+    }
+
+    public Color getStatusColor() {
+        return this.statusColor.get();
     }
 
     public void setStatusColor(Color color) {
         this.statusColor.set(color);
+    }
+
+    public String getLastBody() {
+        return this.lastBody.get();
+    }
+
+    public void setLastBody(String body) {
+        this.lastBody.set(body);
     }
 
     public StringProperty httpMethodProperty() {
@@ -49,8 +65,8 @@ public class RequestModel {
         return isValid;
     }
 
-    public StringProperty lastResponseProperty() {
-        return lastResponse;
+    public StringProperty lastStatusProperty() {
+        return lastStatus;
     }
 
     public StringProperty inputBodyProperty() {
