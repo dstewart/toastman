@@ -6,10 +6,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Builder;
 
 import java.util.Arrays;
@@ -62,13 +68,14 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
     }
 
     private Node inputOutputBox() {
-        return new HBox(6, promptLabel("Input:"), boundScrollableTextArea(model.inputBodyProperty()),
-                promptLabel("Output:"), boundScrollableTextArea(model.lastBodyProperty()));
+        return new HBox(6, promptLabel("Input:"), boundScrollableTextArea(model.inputBodyProperty(), true),
+                promptLabel("Output:"), boundScrollableTextArea(model.lastBodyProperty(), false));
     }
 
     private Node createFooter() {
         Label statusLabel = new Label();
         statusLabel.textProperty().bind(model.lastResponseProperty());
+        statusLabel.textFillProperty().bind(model.statusColorProperty());
 
         Button sendButton = new Button("Send");
         sendButton.disableProperty().bind(model.isValidProperty().not());
@@ -77,9 +84,12 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
             sendButton.setDisable(true);
             statusLabel.textProperty().unbind();
             statusLabel.setText("Sending...");
+            statusLabel.textFillProperty().unbind();
+            statusLabel.setTextFill(Color.BLACK);
             sendHandler.accept(() -> {
                 sendButton.disableProperty().bind(model.isValidProperty().not());
                 statusLabel.textProperty().bind(model.lastResponseProperty());
+                statusLabel.textFillProperty().bind(model.statusColorProperty());
             });
         });
 
@@ -94,8 +104,9 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         return textField;
     }
 
-    private Node boundTextArea(StringProperty boundProperty) {
+    private Node boundTextArea(StringProperty boundProperty, boolean editable) {
         TextArea textArea = new TextArea();
+        textArea.setEditable(editable);
         textArea.textProperty().bindBidirectional(boundProperty);
         return textArea;
     }
@@ -122,9 +133,9 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         return content;
     }
 
-    private Node boundScrollableTextArea(StringProperty boundProperty) {
+    private Node boundScrollableTextArea(StringProperty boundProperty, boolean editable) {
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(boundTextArea(boundProperty));
+        scrollPane.setContent(boundTextArea(boundProperty, editable));
         scrollPane.setPrefSize(TEXT_AREA_WIDTH, TEXT_AREA_HEIGHT);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);

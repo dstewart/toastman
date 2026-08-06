@@ -1,9 +1,7 @@
 package com.github.dstewart.toastman.gui;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
+import javafx.scene.paint.Color;
 
 public class RequestModel {
     private final StringProperty uriAddress = new SimpleStringProperty("");
@@ -11,6 +9,7 @@ public class RequestModel {
     private final StringProperty inputBody = new SimpleStringProperty("");
     private final BooleanProperty isValid = new SimpleBooleanProperty(false);
 
+    private final ObjectProperty<Color> statusColor = new SimpleObjectProperty<>(Color.GREEN);
     private final StringProperty lastBody = new SimpleStringProperty("");
     private final StringProperty lastResponse = new SimpleStringProperty("");
 
@@ -32,6 +31,10 @@ public class RequestModel {
 
     public void setLastResponse(String lastResponse) {
         this.lastResponse.set(lastResponse);
+    }
+
+    public void setStatusColor(Color color) {
+        this.statusColor.set(color);
     }
 
     public StringProperty httpMethodProperty() {
@@ -56,5 +59,9 @@ public class RequestModel {
 
     public StringProperty lastBodyProperty() {
         return lastBody;
+    }
+
+    public ObjectProperty<Color> statusColorProperty() {
+        return statusColor;
     }
 }
