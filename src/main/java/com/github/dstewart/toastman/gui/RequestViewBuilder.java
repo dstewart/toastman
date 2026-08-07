@@ -1,6 +1,7 @@
 package com.github.dstewart.toastman.gui;
 
 import com.github.dstewart.toastman.http.Method;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,6 +34,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
     private static final int WINDOW_HEIGHT = 600;
     private static final int TEXT_AREA_WIDTH = 300;
     private static final int TEXT_AREA_HEIGHT = 400;
+    private static final int URI_INPUT_WIDTH = 600;
 
     @Override
     public Region build() {
@@ -48,18 +50,18 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
     }
 
     private Node createHeader() {
-        HBox content = new HBox(6, headingLabel(TITLE));
+        HBox content = new HBox(6, headingLabel());
         content.setAlignment(Pos.CENTER);
         return content;
     }
 
     private Node createCenter() {
-        VBox content = new VBox(6, accountBox(), methodBox(), inputOutputBox());
+        VBox content = new VBox(6, uriBox(), methodBox(), inputOutputBox());
         content.setPadding(new Insets(20));
         return content;
     }
 
-    private Node accountBox() {
+    private Node uriBox() {
         return new HBox(6, promptLabel("URI:"), boundTextField(model.uriAddressProperty()));
     }
 
@@ -68,8 +70,10 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
     }
 
     private Node inputOutputBox() {
-        return new HBox(6, promptLabel("Input:"), boundScrollableTextArea(model.inputBodyProperty(), true),
-                promptLabel("Output:"), boundScrollableTextArea(model.lastBodyProperty(), false));
+        var inputArea = boundScrollableTextArea(model.inputBodyProperty(), true);
+        inputArea.disableProperty().bind(Bindings.notEqual("POST", model.httpMethodProperty()));
+        var outputArea = boundScrollableTextArea(model.lastBodyProperty(), false);
+        return new HBox(6, promptLabel("Input:"), inputArea, promptLabel("Output:"), outputArea);
     }
 
     private Node createFooter() {
@@ -101,6 +105,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
     private Node boundTextField(StringProperty boundProperty) {
         TextField textField = new TextField();
         textField.textProperty().bindBidirectional(boundProperty);
+        textField.setPrefWidth(URI_INPUT_WIDTH);
         return textField;
     }
 
@@ -146,8 +151,8 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         return styledLabel(text, PROMPT_LABEL_CLASS);
     }
 
-    private Node headingLabel(String text) {
-        return styledLabel(text, HEADING_LABEL_CLASS);
+    private Node headingLabel() {
+        return styledLabel(TITLE, HEADING_LABEL_CLASS);
     }
 
     private Node styledLabel(String text, String classSelector) {
