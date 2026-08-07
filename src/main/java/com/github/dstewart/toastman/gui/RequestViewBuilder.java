@@ -83,7 +83,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
 
         Button sendButton = new Button("Send");
         sendButton.disableProperty().bind(model.isValidProperty().not());
-        sendButton.setOnAction(_ -> {
+        sendButton.setOnAction(evt -> {
             sendButton.disableProperty().unbind();
             sendButton.setDisable(true);
             statusLabel.textProperty().unbind();
@@ -125,7 +125,10 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
                                             .toList();
         radioButtons.forEach(radioButton -> radioButton.setToggleGroup(toggleGroup));
 
-        toggleGroup.selectedToggleProperty().addListener((_, _, newValue) -> {
+        toggleGroup.selectedToggleProperty().addListener((
+                observable,
+                oldValue,
+                newValue) -> {
             if (newValue != null) {
                 model.setHttpMethod(((RadioButton) newValue).getText());
             } else {
