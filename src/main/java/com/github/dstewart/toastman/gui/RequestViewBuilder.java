@@ -82,6 +82,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         statusLabel.textFillProperty().bind(model.statusColorProperty());
 
         Button sendButton = new Button("Send");
+        sendButton.setDefaultButton(true);
         sendButton.disableProperty().bind(model.isValidProperty().not());
         sendButton.setOnAction(evt -> {
             sendButton.disableProperty().unbind();
