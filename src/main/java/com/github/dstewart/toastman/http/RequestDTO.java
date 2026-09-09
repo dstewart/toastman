@@ -2,11 +2,13 @@ package com.github.dstewart.toastman.http;
 
 public class RequestDTO {
     private String uri;
-    private String method;
+    private Method method;
+    private String body;
 
-    public RequestDTO(String uri, String method) {
+    public RequestDTO(String uri, Method method, String body) {
         this.uri = uri;
         this.method = method;
+        this.body = body;
     }
 
     public String getUri() {
@@ -17,11 +19,19 @@ public class RequestDTO {
         this.uri = uri;
     }
 
-    public String getMethod() {
+    public Method getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
+    public void setMethod(Method method) {
         this.method = method;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

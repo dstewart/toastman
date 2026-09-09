@@ -1,6 +1,7 @@
 package com.github.dstewart.toastman.gui;
 
 import com.github.dstewart.toastman.http.ContentType;
+import com.github.dstewart.toastman.http.Method;
 import com.github.dstewart.toastman.http.Response;
 import com.github.dstewart.toastman.http.Success;
 import javafx.scene.paint.Color;
@@ -14,7 +15,7 @@ public class RequestInteractorTest {
         RequestModel model = new RequestModel();
         RequestInteractor interactor = new RequestInteractor(model);
         model.setUriAddress("https://www.github.com");
-        model.setHttpMethod("POST");
+        model.setHttpMethod(Method.POST);
         assertEquals("https://www.github.com", interactor.createRequestFromModel().getUri(), "Check request URI");
     }
 
@@ -23,8 +24,8 @@ public class RequestInteractorTest {
         RequestModel model = new RequestModel();
         RequestInteractor interactor = new RequestInteractor(model);
         model.setUriAddress("https://www.github.com");
-        model.setHttpMethod("POST");
-        assertEquals("POST", interactor.createRequestFromModel().getMethod(), "Check request method");
+        model.setHttpMethod(Method.POST);
+        assertEquals(Method.POST, interactor.createRequestFromModel().getMethod(), "Check request method");
     }
 
     @Test

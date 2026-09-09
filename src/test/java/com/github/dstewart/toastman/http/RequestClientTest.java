@@ -42,11 +42,10 @@ public class RequestClientTest {
         when(httpClient.send(HttpRequest.newBuilder()
                 .uri(URI.create("https://google.com"))
                 .GET()
-                .header("Accept", "application/json")
                 .build(), HttpResponse.BodyHandlers.ofString()))
                 .thenReturn(httpResponse);
 
-        var response = requestClient.sendRequest("https://google.com", "GET");
+        var response = requestClient.sendRequest("https://google.com", Method.GET, null);
         assertInstanceOf(Success.class, response);
         assertEquals("200", response.status());
         assertEquals("Success", response.body());
@@ -64,11 +63,10 @@ public class RequestClientTest {
         when(httpClient.send(HttpRequest.newBuilder()
                 .uri(URI.create("https://google.com"))
                 .GET()
-                .header("Accept", "application/json")
                 .build(), HttpResponse.BodyHandlers.ofString()))
                 .thenThrow(connectException);
 
-        var exception = assertThrows(RequestException.class, () -> requestClient.sendRequest("https://google.com", "GET"));
+        var exception = assertThrows(RequestException.class, () -> requestClient.sendRequest("https://google.com", Method.GET, null));
         assertEquals(connectException.getClass().getSimpleName(), exception.getMessage());
     }
 }

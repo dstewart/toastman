@@ -71,7 +71,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
 
     private Node inputOutputBox() {
         var inputArea = boundScrollableTextArea(model.inputBodyProperty(), true);
-        inputArea.disableProperty().bind(Bindings.notEqual("POST", model.httpMethodProperty()));
+        inputArea.disableProperty().bind(Bindings.notEqual(Method.POST, model.httpMethodProperty()));
         var outputArea = boundScrollableTextArea(model.lastBodyProperty(), false);
         var prettifyCheckBox = prettifyCheckBox((ScrollPane) outputArea);
         var upperBox = new HBox(6, promptLabel("Input:"), inputArea, promptLabel("Output:"), outputArea);
@@ -153,7 +153,8 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
                 oldValue,
                 newValue) -> {
             if (newValue != null) {
-                model.setHttpMethod(((RadioButton) newValue).getText());
+                var buttonText = ((RadioButton) newValue).getText();
+                model.setHttpMethod(Method.fromString(buttonText));
             } else {
                 model.setHttpMethod(null);
             }

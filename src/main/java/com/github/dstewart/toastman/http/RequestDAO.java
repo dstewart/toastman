@@ -9,7 +9,7 @@ public class RequestDAO {
 
     public Response makeHttpRequest(RequestDTO request) {
         try {
-            return client.sendRequest(request.getUri(), request.getMethod());
+            return client.sendRequest(request.getUri(), request.getMethod(), request.getBody());
         }  catch (RequestException e) {
             return new Failure(e.getMessage());
         }

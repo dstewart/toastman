@@ -14,6 +14,6 @@ public class RequestValidator {
 
     public boolean validate() {
         return urlValidator.isValid(model.getUriAddress())
-                && !model.getHttpMethod().isEmpty();
+                && model.getHttpMethod() != null;
     }
 }

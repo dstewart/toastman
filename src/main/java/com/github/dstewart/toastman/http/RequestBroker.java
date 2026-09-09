@@ -13,6 +13,6 @@ public class RequestBroker {
     }
 
     RequestDTO createRequestDTO(Request request) {
-        return new RequestDTO(request.getUri(), request.getMethod());
+        return new RequestDTO(request.getUri(), request.getMethod(), request.getBody());
     }
 }

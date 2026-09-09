@@ -2,7 +2,8 @@ package com.github.dstewart.toastman.http;
 
 public class Request {
     private String uri;
-    private String method;
+    private Method method;
+    private String body;
 
     public String getUri() {
         return uri;
@@ -12,11 +13,19 @@ public class Request {
         this.uri = uri;
     }
 
-    public String getMethod() {
+    public Method getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
+    public void setMethod(Method method) {
         this.method = method;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

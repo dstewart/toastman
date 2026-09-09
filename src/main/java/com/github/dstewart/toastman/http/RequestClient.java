@@ -18,15 +18,20 @@ public class RequestClient {
         this.httpClient = httpClient;
     }
 
-    public Response sendRequest(String uri, String method) throws RequestException {
+    public Response sendRequest(String uri, Method method, String body) throws RequestException {
         try {
-            HttpRequest httpRequest = HttpRequest.newBuilder()
+            var httpRequestBuilder = HttpRequest.newBuilder()
                     .uri(URI.create(uri))
-                    .GET()
-                    .header("Accept", "application/json")
-                    .timeout(Duration.ofSeconds(TIMEOUT_SECONDS))
-                    .build();
+                    .timeout(Duration.ofSeconds(TIMEOUT_SECONDS));
+            if (method == Method.GET)
+                httpRequestBuilder = httpRequestBuilder.GET();
+            else if (method == Method.POST) {
+                httpRequestBuilder = httpRequestBuilder.POST(HttpRequest.BodyPublishers.ofString(body));
+            } else {
+                throw new IllegalArgumentException("Invalid HTTP method " + method);
+            }
 
+            HttpRequest httpRequest = httpRequestBuilder.build();
             HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             String contentTypeHeader = response.headers().firstValue("Content-Type").orElse("");
             return new Success(response.statusCode(), response.body(), ContentType.fromString(contentTypeHeader));

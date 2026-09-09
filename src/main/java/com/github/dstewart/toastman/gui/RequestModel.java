@@ -1,11 +1,12 @@
 package com.github.dstewart.toastman.gui;
 
+import com.github.dstewart.toastman.http.Method;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
 public class RequestModel {
     private final StringProperty uriAddress = new SimpleStringProperty("");
-    private final StringProperty httpMethod = new SimpleStringProperty("");
+    private final ObjectProperty<Method> httpMethod = new SimpleObjectProperty<>(null);
     private final StringProperty inputBody = new SimpleStringProperty("");
     private final BooleanProperty isValid = new SimpleBooleanProperty(false);
 
@@ -22,12 +23,20 @@ public class RequestModel {
         this.uriAddress.set(uriAddress);
     }
 
-    public String getHttpMethod() {
+    public Method getHttpMethod() {
         return httpMethod.get();
     }
 
-    public void setHttpMethod(String httpMethod) {
+    public void setHttpMethod(Method httpMethod) {
         this.httpMethod.set(httpMethod);
+    }
+
+    public String getInputBody() {
+        return inputBody.get();
+    }
+
+    public void setInputBody(String inputBody) {
+        this.inputBody.set(inputBody);
     }
 
     public String getLastStatus() {
@@ -62,7 +71,7 @@ public class RequestModel {
         this.lastBodyPrettified.set(prettifiedBody);
     }
 
-    public StringProperty httpMethodProperty() {
+    public ObjectProperty<Method> httpMethodProperty() {
         return httpMethod;
     }
 

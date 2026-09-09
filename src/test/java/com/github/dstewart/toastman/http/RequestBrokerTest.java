@@ -14,7 +14,7 @@ public class RequestBrokerTest {
     public void createRequestDTOGetURI() {
         Request request = new Request();
         request.setUri("https://www.google.com");
-        request.setMethod("GET");
+        request.setMethod(Method.GET);
         assertEquals("https://www.google.com", broker.createRequestDTO(request).getUri());
     }
 
@@ -22,7 +22,7 @@ public class RequestBrokerTest {
     public void createRequestDTOGetMethod() {
         Request request = new Request();
         request.setUri("https://www.google.com");
-        request.setMethod("GET");
-        assertEquals("GET", broker.createRequestDTO(request).getMethod());
+        request.setMethod(Method.GET);
+        assertEquals(Method.GET, broker.createRequestDTO(request).getMethod());
     }
 }

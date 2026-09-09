@@ -35,6 +35,7 @@ public class RequestInteractor {
         Request request = new Request();
         request.setMethod(model.getHttpMethod());
         request.setUri(model.getUriAddress());
+        request.setBody(model.getInputBody());
         return request;
     }
 }

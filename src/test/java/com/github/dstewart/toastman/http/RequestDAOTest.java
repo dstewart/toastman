@@ -22,13 +22,13 @@ public class RequestDAOTest {
 
     @Test
     public void makeRequestSuccess() throws RequestException {
-        when(client.sendRequest("https://google.com", "GET"))
+        when(client.sendRequest("https://google.com", Method.GET, null))
                 .thenReturn(new Success(200, "Success", ContentType.TEXT));
 
-        RequestDTO request = new RequestDTO("https://google.com", "GET");
+        RequestDTO request = new RequestDTO("https://google.com", Method.GET, null);
         Response response = dao.makeHttpRequest(request);
 
-        verify(client).sendRequest("https://google.com", "GET");
+        verify(client).sendRequest("https://google.com", Method.GET, null);
         assertInstanceOf(Success.class, response);
         assertEquals("200", response.status());
         assertEquals("Success", response.body());
@@ -42,13 +42,13 @@ public class RequestDAOTest {
 
     @Test
     public void makeRequestFailure() throws RequestException {
-        when(client.sendRequest("https://google.com", "GET"))
+        when(client.sendRequest("https://google.com", Method.GET, null))
                 .thenThrow(new RequestException("connection error"));
 
-        RequestDTO request = new RequestDTO("https://google.com", "GET");
+        RequestDTO request = new RequestDTO("https://google.com", Method.GET, null);
         Response response = dao.makeHttpRequest(request);
 
-        verify(client).sendRequest("https://google.com", "GET");
+        verify(client).sendRequest("https://google.com", Method.GET, null);
         assertInstanceOf(Failure.class, response);
         assertEquals("connection error", response.status());
         assertEquals("", response.body());
