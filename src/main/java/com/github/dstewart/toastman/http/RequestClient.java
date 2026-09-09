@@ -28,7 +28,8 @@ public class RequestClient {
                     .build();
 
             HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            return new Success(response.statusCode(), response.body());
+            String contentTypeHeader = response.headers().firstValue("Content-Type").orElse("");
+            return new Success(response.statusCode(), response.body(), ContentType.fromString(contentTypeHeader));
         } catch (Exception ex) {
             var rootCause = ExceptionUtils.getRootCause(ex);
             throw new RequestException(rootCause.getClass().getSimpleName());

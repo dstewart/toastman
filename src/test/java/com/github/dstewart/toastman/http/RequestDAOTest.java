@@ -23,7 +23,7 @@ public class RequestDAOTest {
     @Test
     public void makeRequestSuccess() throws RequestException {
         when(client.sendRequest("https://google.com", "GET"))
-                .thenReturn(new Success(200, "Success"));
+                .thenReturn(new Success(200, "Success", ContentType.TEXT));
 
         RequestDTO request = new RequestDTO("https://google.com", "GET");
         Response response = dao.makeHttpRequest(request);
@@ -33,6 +33,7 @@ public class RequestDAOTest {
         assertEquals("200", response.status());
         assertEquals("Success", response.body());
         assertEquals(Color.GREEN, response.color());
+        assertEquals(ContentType.TEXT, response.contentType());
 
         var success = (Success) response;
         assertEquals(200, success.statusCode());

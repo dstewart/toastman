@@ -1,6 +1,7 @@
 package com.github.dstewart.toastman.gui;
 
 import com.github.dstewart.toastman.http.*;
+import com.github.dstewart.toastman.util.Prettifier;
 import com.github.dstewart.toastman.util.RequestValidator;
 import javafx.beans.binding.Bindings;
 
@@ -27,6 +28,7 @@ public class RequestInteractor {
         model.setLastStatus(lastResponse.status());
         model.setStatusColor(lastResponse.color());
         model.setLastBody(lastResponse.body());
+        model.setLastBodyPrettified(Prettifier.prettify(lastResponse.body(), lastResponse.contentType()));
     }
 
     Request createRequestFromModel() {

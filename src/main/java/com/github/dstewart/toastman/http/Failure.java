@@ -17,4 +17,9 @@ public record Failure(String errorMessage) implements Response {
     public String body() {
         return "";
     }
+
+    @Override
+    public ContentType contentType() {
+        return ContentType.TEXT;
+    }
 }

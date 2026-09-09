@@ -10,8 +10,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -30,8 +33,11 @@ public class RequestClientTest {
 
     @Test
     public void sendRequestSuccess() throws Exception {
+        Map<String, List<String>> headerMap = Map.of("Content-Type", List.of("text/plain"));
+
         when(httpResponse.statusCode()).thenReturn(200);
         when(httpResponse.body()).thenReturn("Success");
+        when(httpResponse.headers()).thenReturn(HttpHeaders.of(headerMap, (k, v) -> true));
 
         when(httpClient.send(HttpRequest.newBuilder()
                 .uri(URI.create("https://google.com"))
@@ -45,6 +51,7 @@ public class RequestClientTest {
         assertEquals("200", response.status());
         assertEquals("Success", response.body());
         assertEquals(Color.GREEN, response.color());
+        assertEquals(ContentType.TEXT, response.contentType());
 
         var success = (Success) response;
         assertEquals(200, success.statusCode());

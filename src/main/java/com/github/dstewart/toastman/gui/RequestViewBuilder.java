@@ -73,7 +73,23 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         var inputArea = boundScrollableTextArea(model.inputBodyProperty(), true);
         inputArea.disableProperty().bind(Bindings.notEqual("POST", model.httpMethodProperty()));
         var outputArea = boundScrollableTextArea(model.lastBodyProperty(), false);
-        return new HBox(6, promptLabel("Input:"), inputArea, promptLabel("Output:"), outputArea);
+        var prettifyCheckBox = prettifyCheckBox((ScrollPane) outputArea);
+        var upperBox = new HBox(6, promptLabel("Input:"), inputArea, promptLabel("Output:"), outputArea);
+        var lowerBox = new HBox(6, prettifyCheckBox);
+        return new VBox(6, upperBox, lowerBox);
+    }
+
+    private Node prettifyCheckBox(ScrollPane outputArea) {
+        var prettifyCheckBox = new CheckBox("Prettify");
+        prettifyCheckBox.setOnAction(evt -> {
+            TextArea textArea = (TextArea) outputArea.getContent();
+            if (prettifyCheckBox.isSelected()) {
+                textArea.textProperty().bind(model.lastBodyPrettifiedProperty());
+            } else {
+                textArea.textProperty().bind(model.lastBodyProperty());
+            }
+        });
+        return prettifyCheckBox;
     }
 
     private Node createFooter() {
@@ -110,10 +126,16 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         return textField;
     }
 
-    private Node boundTextArea(StringProperty boundProperty, boolean editable) {
+    private Node boundInputArea(StringProperty boundProperty) {
         TextArea textArea = new TextArea();
-        textArea.setEditable(editable);
+        textArea.setEditable(true);
         textArea.textProperty().bindBidirectional(boundProperty);
+        return textArea;
+    }
+
+    private Node boundOutputArea(StringProperty boundProperty) {
+        TextArea textArea = new TextArea();
+        textArea.textProperty().bind(boundProperty);
         return textArea;
     }
 
@@ -144,7 +166,8 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
 
     private Node boundScrollableTextArea(StringProperty boundProperty, boolean editable) {
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(boundTextArea(boundProperty, editable));
+        Node content = editable ? boundInputArea(boundProperty) : boundOutputArea(boundProperty);
+        scrollPane.setContent(content);
         scrollPane.setPrefSize(TEXT_AREA_WIDTH, TEXT_AREA_HEIGHT);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);

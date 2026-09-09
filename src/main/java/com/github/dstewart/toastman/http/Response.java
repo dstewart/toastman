@@ -6,4 +6,5 @@ public interface Response {
     String status();
     Color color();
     String body();
+    ContentType contentType();
 }
