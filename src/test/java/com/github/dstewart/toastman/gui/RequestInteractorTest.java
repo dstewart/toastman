@@ -4,7 +4,7 @@ import com.github.dstewart.toastman.http.ContentType;
 import com.github.dstewart.toastman.http.Method;
 import com.github.dstewart.toastman.http.Response;
 import com.github.dstewart.toastman.http.Success;
-import javafx.scene.paint.Color;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,7 +35,6 @@ public class RequestInteractorTest {
         Response response = new Success(404, "Not Found", ContentType.TEXT);
         interactor.updateLastResponse(response);
         assertEquals("404", model.getLastStatus());
-        assertEquals(Color.GREEN, model.getStatusColor());
         assertEquals("Not Found", model.getLastBody());
         assertEquals("NOT FOUND", model.getLastBodyPrettified());
     }

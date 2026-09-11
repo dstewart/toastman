@@ -1,7 +1,9 @@
 package com.github.dstewart.toastman.gui;
 
 import com.github.dstewart.toastman.http.Method;
+import com.github.dstewart.toastman.util.ColorPicker;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -93,9 +95,11 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
     }
 
     private Node createFooter() {
+        ObjectBinding<Color> colorBinding = Bindings.createObjectBinding(
+                () -> ColorPicker.fromString(model.getLastStatus()), model.lastStatusProperty());
         Label statusLabel = new Label();
         statusLabel.textProperty().bind(model.lastStatusProperty());
-        statusLabel.textFillProperty().bind(model.statusColorProperty());
+        statusLabel.textFillProperty().bind(colorBinding);
 
         Button sendButton = new Button("Send");
         sendButton.setDefaultButton(true);
@@ -110,7 +114,7 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
             sendHandler.accept(() -> {
                 sendButton.disableProperty().bind(model.isValidProperty().not());
                 statusLabel.textProperty().bind(model.lastStatusProperty());
-                statusLabel.textFillProperty().bind(model.statusColorProperty());
+                statusLabel.textFillProperty().bind(colorBinding);
             });
         });
 

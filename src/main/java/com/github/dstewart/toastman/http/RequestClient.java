@@ -23,9 +23,9 @@ public class RequestClient {
             var httpRequestBuilder = HttpRequest.newBuilder()
                     .uri(URI.create(uri))
                     .timeout(Duration.ofSeconds(TIMEOUT_SECONDS));
-            if (method == Method.GET)
+            if (method == Method.GET) {
                 httpRequestBuilder = httpRequestBuilder.GET();
-            else if (method == Method.POST) {
+            } else if (method == Method.POST) {
                 httpRequestBuilder = httpRequestBuilder.POST(HttpRequest.BodyPublishers.ofString(body));
             } else {
                 throw new IllegalArgumentException("Invalid HTTP method " + method);

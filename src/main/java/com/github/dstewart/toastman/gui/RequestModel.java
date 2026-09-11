@@ -2,7 +2,6 @@ package com.github.dstewart.toastman.gui;
 
 import com.github.dstewart.toastman.http.Method;
 import javafx.beans.property.*;
-import javafx.scene.paint.Color;
 
 public class RequestModel {
     private final StringProperty uriAddress = new SimpleStringProperty("");
@@ -10,7 +9,6 @@ public class RequestModel {
     private final StringProperty inputBody = new SimpleStringProperty("");
     private final BooleanProperty isValid = new SimpleBooleanProperty(false);
 
-    private final ObjectProperty<Color> statusColor = new SimpleObjectProperty<>(Color.GREEN);
     private final StringProperty lastBody = new SimpleStringProperty("");
     private final StringProperty lastBodyPrettified = new SimpleStringProperty("");
     private final StringProperty lastStatus = new SimpleStringProperty("");
@@ -35,24 +33,12 @@ public class RequestModel {
         return inputBody.get();
     }
 
-    public void setInputBody(String inputBody) {
-        this.inputBody.set(inputBody);
-    }
-
     public String getLastStatus() {
         return this.lastStatus.get();
     }
 
     public void setLastStatus(String lastStatus) {
         this.lastStatus.set(lastStatus);
-    }
-
-    public Color getStatusColor() {
-        return this.statusColor.get();
-    }
-
-    public void setStatusColor(Color color) {
-        this.statusColor.set(color);
     }
 
     public String getLastBody() {
@@ -93,10 +79,6 @@ public class RequestModel {
 
     public StringProperty lastBodyProperty() {
         return lastBody;
-    }
-
-    public ObjectProperty<Color> statusColorProperty() {
-        return statusColor;
     }
 
     public StringProperty lastBodyPrettifiedProperty() {

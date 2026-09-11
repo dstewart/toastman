@@ -26,7 +26,6 @@ public class RequestInteractor {
 
     public void updateLastResponse(Response lastResponse) {
         model.setLastStatus(lastResponse.status());
-        model.setStatusColor(lastResponse.color());
         model.setLastBody(lastResponse.body());
         model.setLastBodyPrettified(Prettifier.prettify(lastResponse.body(), lastResponse.contentType()));
     }

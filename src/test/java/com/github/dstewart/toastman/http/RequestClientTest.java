@@ -1,6 +1,5 @@
 package com.github.dstewart.toastman.http;
 
-import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -49,7 +48,6 @@ public class RequestClientTest {
         assertInstanceOf(Success.class, response);
         assertEquals("200", response.status());
         assertEquals("Success", response.body());
-        assertEquals(Color.GREEN, response.color());
         assertEquals(ContentType.TEXT, response.contentType());
 
         var success = (Success) response;
