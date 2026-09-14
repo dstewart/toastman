@@ -76,9 +76,9 @@ public record RequestViewBuilder(RequestModel model, Consumer<Runnable> sendHand
         inputArea.disableProperty().bind(Bindings.notEqual(Method.POST, model.httpMethodProperty()));
         var outputArea = boundScrollableTextArea(model.lastBodyProperty(), false);
         var prettifyCheckBox = prettifyCheckBox((ScrollPane) outputArea);
-        var upperBox = new HBox(6, promptLabel("Input:"), inputArea, promptLabel("Output:"), outputArea);
-        var lowerBox = new HBox(6, prettifyCheckBox);
-        return new VBox(6, upperBox, lowerBox);
+        var leftColumn = new VBox(6, inputArea);
+        var rightColumn = new VBox(6, outputArea, prettifyCheckBox);
+        return new HBox(6, promptLabel("Input:"), leftColumn, promptLabel("Output:"), rightColumn);
     }
 
     private Node prettifyCheckBox(ScrollPane outputArea) {
