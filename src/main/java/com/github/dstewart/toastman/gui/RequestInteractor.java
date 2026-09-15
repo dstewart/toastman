@@ -1,8 +1,9 @@
 package com.github.dstewart.toastman.gui;
 
 import com.github.dstewart.toastman.http.*;
-import com.github.dstewart.toastman.util.Prettifier;
+import com.github.dstewart.toastman.util.prettifier.Prettifier;
 import com.github.dstewart.toastman.util.RequestValidator;
+import com.github.dstewart.toastman.util.prettifier.PrettifyException;
 import javafx.beans.binding.Bindings;
 
 import java.net.http.HttpClient;
@@ -27,7 +28,12 @@ public class RequestInteractor {
     public void updateLastResponse(Response lastResponse) {
         model.setLastStatus(lastResponse.status());
         model.setLastBody(lastResponse.body());
-        model.setLastBodyPrettified(Prettifier.prettify(lastResponse.body(), lastResponse.contentType()));
+        try {
+            String prettifiedBody = Prettifier.prettify(lastResponse.body(), lastResponse.contentType());
+            model.setLastBodyPrettified(prettifiedBody);
+        } catch (PrettifyException ex) {
+            System.err.println("Error prettifying response body: " + ex.getMessage());
+        }
     }
 
     Request createRequestFromModel() {
